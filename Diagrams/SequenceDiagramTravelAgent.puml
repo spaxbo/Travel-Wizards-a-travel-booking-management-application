@@ -1,0 +1,20 @@
+@startuml
+actor TravelAgent as TA
+participant System as SYS
+participant Database as DB
+
+TA -> SYS : Login()
+SYS -> DB : ValidateCredentials()
+DB --> SYS : CredentialsValid()
+SYS --> TA : LoginSuccess()
+
+TA -> SYS : SearchRoutes(origin, destination, date)
+SYS -> DB : GetAvailableRoutes(origin, destination, date)
+DB --> SYS : AvailableRoutes()
+SYS --> TA : DisplayRoutes(routes)
+
+TA -> SYS : SelectRoute(routeID)
+SYS -> DB : InsertReservation(routeID, travelerDetails)
+DB --> SYS : ReservationSuccess()
+SYS --> TA : ConfirmReservation(reservationDetails)
+@enduml

@@ -1,0 +1,96 @@
+<UserControl x:Class="TravelWizards.TimePicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TravelWizards"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="250">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <ComboBox x:Name="ComboBoxHour" Style="{DynamicResource ComboBoxCustomStyle}" Grid.Column="0" VerticalAlignment="Center" Margin="0, 0, 7.5, 0" SelectedIndex="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="6,1,5,3">
+            <ComboBoxItem Content="01"/>
+            <ComboBoxItem Content="02"/>
+            <ComboBoxItem Content="03"/>
+            <ComboBoxItem Content="04"/>
+            <ComboBoxItem Content="05"/>
+            <ComboBoxItem Content="06"/>
+            <ComboBoxItem Content="07"/>
+            <ComboBoxItem Content="08"/>
+            <ComboBoxItem Content="09"/>
+            <ComboBoxItem Content="10"/>
+            <ComboBoxItem Content="11"/>
+            <ComboBoxItem Content="12"/>
+        </ComboBox>
+        <ComboBox x:Name="ComboBoxMinute" Style="{DynamicResource ComboBoxCustomStyle}" Grid.Column="1" VerticalAlignment="Center" Margin="7.5, 0, 7.5, 0" SelectedIndex="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="6,1,5,3">
+            <ComboBoxItem Content="00"/>
+            <ComboBoxItem Content="01"/>
+            <ComboBoxItem Content="02"/>
+            <ComboBoxItem Content="03"/>
+            <ComboBoxItem Content="04"/>
+            <ComboBoxItem Content="05"/>
+            <ComboBoxItem Content="06"/>
+            <ComboBoxItem Content="07"/>
+            <ComboBoxItem Content="08"/>
+            <ComboBoxItem Content="09"/>
+            <ComboBoxItem Content="10"/>
+            <ComboBoxItem Content="11"/>
+            <ComboBoxItem Content="12"/> 
+            <ComboBoxItem Content="13"/> 
+            <ComboBoxItem Content="14"/> 
+            <ComboBoxItem Content="15"/> 
+            <ComboBoxItem Content="16"/> 
+            <ComboBoxItem Content="17"/> 
+            <ComboBoxItem Content="18"/> 
+            <ComboBoxItem Content="19"/> 
+            <ComboBoxItem Content="20"/> 
+            <ComboBoxItem Content="21"/> 
+            <ComboBoxItem Content="22"/> 
+            <ComboBoxItem Content="23"/> 
+            <ComboBoxItem Content="24"/> 
+            <ComboBoxItem Content="25"/> 
+            <ComboBoxItem Content="26"/> 
+            <ComboBoxItem Content="27"/> 
+            <ComboBoxItem Content="28"/> 
+            <ComboBoxItem Content="29"/> 
+            <ComboBoxItem Content="30"/> 
+            <ComboBoxItem Content="31"/> 
+            <ComboBoxItem Content="32"/> 
+            <ComboBoxItem Content="33"/> 
+            <ComboBoxItem Content="34"/> 
+            <ComboBoxItem Content="35"/> 
+            <ComboBoxItem Content="36"/> 
+            <ComboBoxItem Content="37"/> 
+            <ComboBoxItem Content="38"/> 
+            <ComboBoxItem Content="39"/> 
+            <ComboBoxItem Content="40"/> 
+            <ComboBoxItem Content="41"/> 
+            <ComboBoxItem Content="42"/> 
+            <ComboBoxItem Content="43"/> 
+            <ComboBoxItem Content="44"/> 
+            <ComboBoxItem Content="45"/> 
+            <ComboBoxItem Content="46"/> 
+            <ComboBoxItem Content="47"/> 
+            <ComboBoxItem Content="48"/> 
+            <ComboBoxItem Content="49"/> 
+            <ComboBoxItem Content="50"/> 
+            <ComboBoxItem Content="51"/> 
+            <ComboBoxItem Content="52"/> 
+            <ComboBoxItem Content="53"/> 
+            <ComboBoxItem Content="54"/> 
+            <ComboBoxItem Content="55"/> 
+            <ComboBoxItem Content="56"/> 
+            <ComboBoxItem Content="57"/> 
+            <ComboBoxItem Content="58"/> 
+            <ComboBoxItem Content="59"/> 
+        </ComboBox>
+        <ComboBox x:Name="ComboBoxAmPm" Style="{DynamicResource ComboBoxCustomStyle}" Grid.Column="2" VerticalAlignment="Center" Margin="7.5, 0, 0, 0" SelectedIndex="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="6,1,5,3">
+            <ComboBoxItem Content="AM"/>
+            <ComboBoxItem Content="PM"/>
+        </ComboBox>
+    </Grid>
+</UserControl>

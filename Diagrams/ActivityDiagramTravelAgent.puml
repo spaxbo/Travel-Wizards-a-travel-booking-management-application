@@ -1,0 +1,43 @@
+@startuml
+|Travel Agent|
+start
+
+while(Login) is (invalid);
+|System|
+    :Credentials invalid;
+    :Login failed;
+endwhile (valid)
+
+|Travel Agent|
+:Credentials valid;
+:Enter traveler details;
+
+while(Select Action)
+    :Route;
+    |System|
+    :Search available routes;
+    :Display available routes;
+    |Travel Agent|
+    :Select Route;
+
+    |System|
+    :Insert reservation into DB;
+    :Query DB for reservations;
+    :Display reservations;
+
+endwhile
+    |Travel Agent|
+    :Manage reservations;
+    |Travel Agent|
+    if (Cancel reservation?) then (yes)
+      |Travel Agent|
+      :Select reservation to cancel;
+      |System|
+      :Update reservation in DB;
+    else (no)
+      |Travel Agent|
+      :Select Action;
+      kill
+    endif
+    stop
+@enduml

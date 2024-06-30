@@ -1,0 +1,215 @@
+@startuml
+
+skinparam linetype ortho
+skinparam dpi 180
+top to bottom direction
+
+namespace TravelWizards {
+    package "TravelWizards.Data" {
+        namespace TravelWizards.Data {
+            class DatabaseService {
+                +DatabaseService(connectionString: string))
+                +ConnectionString: string
+                +ToggleBoardedStatus(passenger: Passenger): void
+                +LoadLocations(): List<string>
+                +LoadTrips(location: string): List<string>
+                +LoadPassengers(currentLocation: string): List<Passenger>
+                +GetLocationId(locationName: string): int
+                +FetchCompanyName(userEmail: string): string
+                +InsertTravelRoute(departureId: int, arrivalId: int, transportType: string): int
+                +InsertRouteSchedule(routeId: int, departureTime: DateTime, arrivalTime: DateTime, price: int, frequency: TimeSpan, validFrom: DateTime, validUntil: DateTime): void
+                +UpdateRoutePrice(route: Route): void
+                +DeleteShownRoutes(routes: List<Route>): void
+                +DeleteRoute(route: Route): void
+                +LoadIdealRoutes(departure: string, arrival: string): List<RouteInfo>
+                +CancelReservation(selectedReservation: RouteInfo, firstName: string, lastName: string): void
+                +ReserveRoute(selectedRoute: RouteInfo, userName: string): void
+                +LoadUserReservations(firstName: string, lastName: string): List<RouteInfo>
+                -GetUserId(conn: NpgsqlConnection): int
+                -GetCompanyId(conn: NpgsqlConnection): int
+            }
+
+            class Passenger {
+                +BookingDetailId: int
+                +Name: string
+                +HasBoarded: bool
+            }
+
+            class Route {
+                +Departure: string
+                +Arrival: string
+                +Price: int
+                +PriceRatio: double
+                +DepartureTime: TimeOnly
+                +ArrivalTime: TimeOnly
+
+                +Route(departure: string, arrival: string, price: int, priceRatio, departureTime: TimeOnly, arrivalTime: TimeOnly)
+            }
+
+            class RouteInfo {
+                +RouteIds: string
+                +DepartureLocation: string
+                +ArrivalLocation: string
+                +NumberOfStops: int
+                +TotalPrice: int
+                +TotalHours: double
+                +WeightedScore: double
+                +DepartureTime: DateTime
+                +ArrivalTime: DateTime
+            }
+        }
+    }
+
+     DatabaseService --> Route
+     DatabaseService --> RouteInfo
+     DatabaseService --> Passenger
+
+
+    class BoardingAgentWindow {
+        -databaseService: DatabaseService
+        -passengers: List<Passenger>
+
+        +BoardingAgentWindow(connectionString: string)
+        +BoardingAgentWindow_Closed(sender: object?, e: EventArgs): void
+        +ButtonStartBoarding_Click(sender: object, e: RoutedEventArgs): void
+        -ComboBoxCurrentLocation_SelectionChanged(sender: object, e: SelectionChangedEventArgs): void
+        -FinishBoardingButton_Click(sender: object, e: RoutedEventArgs): void
+        -ToggleBoardedStatus_Click(sender: object, e: RoutedEventArgs): void
+        -LoadLocations(): void
+        -LoadTrips(location: string): void
+        -LoadPassengers(): void
+    }
+
+    BoardingAgentWindow --> DatabaseService
+    BoardingAgentWindow --> Passenger
+    BoardingAgentWindow --> LoginWindow
+
+    class CompanyWindow {
+        - databaseService: DatabaseService
+        - allLocations: List<string>
+
+        +CompanyWindow(connectionString: string)
+        -LoadLocations(): void
+        -GetLocationId(locationName: string) : int
+        -DepartureLocation_SelectionChanged(sender: object, e : SelectionChangedEventArgs) : void
+        -ArrivalLocation_SelectionChanged(sender : object, e : SelectionChangedEventArgs) : void
+        -FetchCompanyName() : void
+        -FetchCompanyNameForRoutesTab() : void
+        -SetupEventHandlers() : void
+        -InsertService() : void
+        -ButtonAddService_Click(sender : object, e : RoutedEventArgs) : void
+        -LoadRoutes(locationFilter = null : string?) : void
+        -ButtonSearchByLocation_Click(sender: object, e : RoutedEventArgs) : void
+        -ButtonDeleteAllShown_Click(sender: object, e : RoutedEventArgs) : void
+        -CancelRoute_Click(sender : object, e : RoutedEventArgs) : void
+        -RoutesDataGrid_CellEditEnding(sender : object, e : DataGridCellEditEndingEventArgs) : void
+        -CompanyWindow_Closed(sender : object?, e : EventArgs)
+        -GetSelectedTransportType() : string?
+        -GetSelectedFrequency() : TimeSpan
+        -OnDateTimeChanged(sender: object, e : EventArgs) : void
+        -ExtractEmailFromConnectionString(connectionString: string) : static string
+    }
+
+    CompanyWindow --> DatabaseService
+    CompanyWindow --> Route
+    CompanyWindow --> TimePicker
+    CompanyWindow --> LoginWindow
+
+
+    class CustomMessageWindow {
+        +CustomMessageWindow(type: string, title: string, message: string)
+        +OKButton_Click(sender: object, e: RoutedEventArgs)
+    }
+
+    note right of CustomMessageWindow: "This is a custom implementation of a MessageBox. \nIt is instantiated anywhere a message box needs to be displayed, namely windows and the login states\n(which open a message box to return success or failure).\nTo prevent cluttering the diagram, the arrows have been ommitted."
+
+
+    interface ILoginState {
+        +Handle(context: LoginWindow): void
+    }
+
+    class LoginFailedState {
+        +Handle(context: LoginWindow): void
+    }
+
+    class LoginInitialState {
+        +Handle(context: LoginWindow): void
+    }
+
+    class LoginSuccessState {
+        +Handle(context: LoginWindow): void
+    }
+
+
+    ILoginState <|.. LoginFailedState
+    ILoginState <|... LoginInitialState
+    ILoginState <|.. LoginSuccessState
+
+    class LoginWindow {
+        -const ConnectionString: string = "Host=localhost;Database=postgres"
+        -specificConnectionString: string
+        -currentState: ILoginState
+
+        +LoginWindow()
+        -ButtonLogin_Click(sender: object, e : RoutedEventArgs) : void
+        +PerformLogin(): void
+        +SetState(state: ILoginState): void
+        +TextBoxEmail_GotFocus(sender: object, e: RoutedEventArgs): void
+        +TextBoxPassword_GotFocus(sender: object, e: RoutedEventArgs): void
+        +TextBoxEmail_LostFocus(sender: object, e: RoutedEventArgs): void
+        -DetermineUserRole(conn: NpgsqlConnection, email : string) : static string?
+        +OpenRoleSpecificWindow() : void
+    }
+
+    LoginWindow --> ILoginState
+
+
+    class TimePicker {
+        +TimeChanged : EventHandler?
+        +TimePicker()
+        +ComboBox_SelectionChanged(sender: object, e: SelectionChangedEventArgs)
+    }
+    class TravelAgentWindow {
+        -databaseService: DatabaseService
+        -allLocations: List<string>
+        -isSearchForBooking: bool
+        +PropertyChanged: event PropertyChangedEventHandler
+
+        +TravelAgentWindow(connectionString: string)
+        -LoadLocations()
+        -ComboBoxDeparture_SelectionChanged(sender: object, e: SelectionChangedEventArgs)
+        -ComboBoxArrival_SelectionChanged(sender: object, e: SelectionChangedEventArgs)
+        -FetchCompanyName()
+        -UpdateArrivalComboBox() : void
+        -UpdateDepartureComboBox() : void
+        -ButtonSearch_Click(sender: object, e: RoutedEventArgs)
+        -ButtonReservationsDisplay_Click(sender: object, e: RoutedEventArgs)
+        -DataGridRoutes_MouseDoubleClick(sender: object, e: MouseButtonEventArgs)
+        -CancelReservation_Click(sender: object, e: RoutedEventArgs)
+        -LoadIdealRoutes() : void
+        -ReserveSelectedRoute(sender: object) : void
+        -LoadUserReservations() : void
+        -TravelAgentWindow_Closed(sender: object, e: EventArgs) : void
+        -GenericButton_Click(sender: object, e: RoutedEventArgs) : void
+        -ExtractEmailFromConnectionString(connectionString: string) : static string
+        -GetRouteDetails(routeInfo: RouteInfo) : static string
+        +IsSearchForBooking : bool
+        +ActionButtonText : string
+        -OnPropertyChanged(propertyName: string) : void
+    }
+
+    note bottom of LoginWindow: "The relationship between LoginWindow and the other windows\nis represented by the fact that, upon login, the correct type is\ninstantiated by LoginWindow and displayed"
+
+    TravelAgentWindow -> RouteInfo
+    TravelAgentWindow -> DatabaseService
+
+    TravelAgentWindow -> LoginWindow
+    TravelAgentWindow -down-> TravelAgentWindowRoutePopup
+
+    class TravelAgentWindowRoutePopup {
+        +TravelAgentWindowRoutePopup(departureTime: DateTime, arrivalTime: DateTime, routeDetails: string)
+        -OKButton_Click(sender: object, e : RoutedEventArgs) : void
+    }
+
+}
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+actor BoardingAgent as BA
+participant System as SYS
+participant Database as DB
+
+BA -> SYS : Login(credentials)
+SYS -> DB : ValidateCredentials(credentials)
+DB --> SYS : ValidationResult(valid)
+SYS --> BA : LoginResult(valid)
+
+BA -> SYS : AccessPassengerList()
+SYS -> DB : GetPassengerList()
+DB --> SYS : PassengerList(passengers)
+SYS --> BA : DisplayPassengerList(passengers)
+
+BA -> SYS : MarkPassengers(passengerIDs, status)
+SYS -> DB : UpdatePassengerStatus(passengerIDs, status)
+DB --> SYS : UpdateResult(success)
+SYS --> BA : ConfirmStatusUpdate(success)
+
+BA -> SYS : GenerateBoardingReport()
+SYS -> DB : GetBoardingData()
+DB --> SYS : BoardingData(data)
+SYS --> BA : DisplayBoardingReport(data)
+@enduml

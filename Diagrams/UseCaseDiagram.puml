@@ -1,0 +1,19 @@
+@startuml
+actor "Travel Agent" as TA
+actor "Transport Company" as TC
+actor "Boarding Agent" as BA
+
+left to right direction
+TA --> (Search Routes)
+TA --> (Make Reservation)
+TA --> (Cancel Reservation)
+
+TC --> (Add New Route)
+TC --> (Display Routes)
+TC --> (Manage Routes)
+
+BA --> (Access Passenger List)
+BA --> (Mark Passengers)
+BA --> (Generate Boarding Report)
+
+@enduml

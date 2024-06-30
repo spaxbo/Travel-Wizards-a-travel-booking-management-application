@@ -1,0 +1,35 @@
+@startuml
+actor TransportCompany as TC
+participant System as SYS
+participant Database as DB
+
+TC -> SYS : Login(credentials)
+SYS -> DB : ValidateCredentials(credentials)
+DB --> SYS : ValidationResult(valid)
+SYS --> TC : LoginResult(valid)
+
+TC -> SYS : AddNewService(routeDetails)
+SYS -> DB : InsertService(routeDetails)
+DB --> SYS : InsertResult(success)
+SYS --> TC : ConfirmServiceAddition(success)
+
+TC -> SYS : SearchRoute()
+SYS -> DB : SearchRoute()
+DB --> SYS : UpdateSearch(success)
+SYS --> TC : ConfirmRouteExists(success)
+
+TC -> SYS : ChangePrice(newPrice)
+SYS -> DB : UpdatePrice(newPrice)
+DB --> SYS : UpdateResult(success)
+SYS --> TC : ConfirmPriceModification(success)
+
+TC -> SYS : CancelRoute(routeID)
+SYS -> DB : DeleteRoute(routeID)
+DB --> SYS : DeleteResult(success)
+SYS --> TC : ConfirmRouteCancellation(success)
+
+TC -> SYS : DeleteAll(routeID)
+SYS -> DB : DeleteAllRoutes(routeID)
+DB --> SYS : DeleteResult(success)
+SYS --> TC : ConfirmAllRoutesCancellation(success)
+@enduml

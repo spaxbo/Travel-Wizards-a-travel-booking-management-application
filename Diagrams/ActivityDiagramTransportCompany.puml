@@ -1,0 +1,37 @@
+@startuml
+|Transport Company|
+start
+while(Login) is (invalid);
+|System|
+    :Credentials invalid;
+    :Login failed;
+endwhile (valid)
+
+|Transport Company|
+:Credentials valid;
+:Validate credentials;
+
+while(Select Action)
+    |Transport Company|
+      :Add new route;
+      |System|
+      :Insert route into DB;
+endwhile
+    |Transport Company|
+    :Search route;
+    |System|
+    :Display route;
+    |Transport Company|
+    if(Select action)
+        |Transport Company|
+        :Change Price;
+        |System|
+        :Update price into DB;
+    else
+        |Transport Company|
+        :Cancel route;
+        |System|
+        :Update route into DB;
+    endif
+stop
+@enduml

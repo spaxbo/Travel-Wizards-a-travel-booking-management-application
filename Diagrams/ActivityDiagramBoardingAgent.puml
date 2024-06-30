@@ -1,0 +1,32 @@
+@startuml
+|Boarding Agent|
+start
+
+while(Login) is (invalid);
+|System|
+    :Credentials invalid;
+    :Login failed;
+endwhile (valid)
+
+|Boarding Agent|
+:Credentials valid;
+:Validate credentials;
+
+  |Boarding Agent|
+  :Select current location;
+  |System|
+  :Display current location;
+  |Boarding Agent|
+  :Select Trip;
+  |System|
+  :Display available trips;
+  |Boarding Agent|
+  :Access passenger list;
+  |System|
+  :Display passenger list;
+  |Boarding Agent|
+  :Mark passengers as boarded/absent;
+  :Generate boarding report;
+
+stop
+@enduml
